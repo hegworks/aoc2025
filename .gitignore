@@ -3,9 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-input.text
-output.text
-question.text
+input.txt
+output.txt
+question.txt
 
 # User-specific files
 *.rsuser
