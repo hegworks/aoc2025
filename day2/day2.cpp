@@ -1,22 +1,24 @@
 #include "../shared_lib/include/FileReader.h"
+#include "../shared_lib/include/FileWriter.hpp"
 #include "../shared_lib/include/shared_lib.hpp"
-
-#include <iostream>
+#include "../shared_lib/external/fmt/include/fmt/core.h"
 
 int main()
 {
-    printf("Day 2");
-    printf("\n");
-    printf("------------");
-    printf("\n");
+    fmt::println("Day2");
+    fmt::println("------------");
 
     SharedLib sl{};
 
     FileReader fr{};
     fr.LoadFile("input.txt");
 
+    FileWriter writer("../day2/output.txt");
+    writer.WriteLine("Day2");
+
     int dial{50};
-    int zero_counter{0};
+    int zero_at_end_counter{0};
+    int zero_during_counter{0};
 
     const int total_line_count = fr.LineCount();
     for (int line_idx = 0; line_idx < total_line_count; ++line_idx)
@@ -26,38 +28,44 @@ int main()
         std::string input_dial_change_str = input_str.substr(1);
         int input_dial_change = std::stoi(input_dial_change_str);
 
-        input_dial_change = input_dial_change % 100;
+        for (int i = 0; i < input_dial_change; ++i)
+        {
+            if (first_char_str == "L")
+            {
+                dial--;
+                if (dial < 0)
+                {
+                    dial = 99;
+                }
+            }
+            else
+            {
+                dial++;
+                if (dial > 99)
+                {
+                    dial = 0;
+                }
+            }
 
-        if (first_char_str == "L")
-        {
-            dial -= input_dial_change;
-        }
-        else
-        {
-            dial += input_dial_change;
+            if (dial == 0)
+            {
+                zero_during_counter++;
+            }
         }
 
-        if (dial > 99)
-        {
-            dial = dial - 100;
-        }
-        if (dial < 0)
-        {
-            dial = dial + 100;
-        }
-
-        if (dial == 0)
-        {
-            zero_counter++;
-        }
+        writer.WriteLine(fmt::format("{}", dial));
     }
 
-    printf("\n");
-    printf("------------");
-    printf("\n");
-    printf("zeroes: %d", zero_counter);
-    printf("\n");
-    printf("dial: %d", dial);
+    writer.WriteLine(fmt::format("----------"));
+    writer.WriteLine(fmt::format("dial: {}", dial));
+    writer.WriteLine(fmt::format("zero_during_counter: {}", zero_during_counter));
+    writer.WriteLine(fmt::format("zero_at_end_counter: {}", zero_at_end_counter));
+    writer.WriteLine(fmt::format("zeroes_total: {}", zero_at_end_counter + zero_during_counter));
+    writer.Close();
 
-    printf("\n");
+    fmt::println("------------");
+    fmt::println("dial: {}", dial);
+    fmt::println("zero_during_counter: {}", zero_during_counter);
+    fmt::println("zero_at_end_counter: {}", zero_at_end_counter);
+    fmt::println("zeroes_total: {}", zero_at_end_counter + zero_during_counter);
 }

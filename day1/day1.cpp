@@ -1,19 +1,20 @@
 #include "../shared_lib/include/FileReader.h"
+#include "../shared_lib/include/FileWriter.hpp"
 #include "../shared_lib/include/shared_lib.hpp"
-
-#include <iostream>
+#include "../shared_lib/external/fmt/include/fmt/core.h"
 
 int main()
 {
-    printf("Day 1");
-    printf("\n");
-    printf("------------");
-    printf("\n");
+    fmt::println("Day1");
+    fmt::println("------------");
 
     SharedLib sl{};
 
     FileReader fr{};
     fr.LoadFile("input.txt");
+
+    FileWriter writer("../day1/output.txt");
+    writer.WriteLine("Day1");
 
     int dial{50};
     int zero_counter{0};
@@ -50,14 +51,16 @@ int main()
         {
             zero_counter++;
         }
+
+        writer.WriteLine(fmt::format("{}", dial));
     }
 
-    printf("\n");
-    printf("------------");
-    printf("\n");
-    printf("zeroes: %d", zero_counter);
-    printf("\n");
-    printf("dial: %d", dial);
+    writer.WriteLine(fmt::format("----------"));
+    writer.WriteLine(fmt::format("zeroes: {}", zero_counter));
+    writer.WriteLine(fmt::format("dial: {}", dial));
+    writer.Close();
 
-    printf("\n");
+    fmt::println("------------");
+    fmt::println("dial: {}", dial);
+    fmt::println("zeroes: {}", zero_counter);
 }
