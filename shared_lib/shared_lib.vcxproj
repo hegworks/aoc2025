@@ -298,6 +298,8 @@
     <ClInclude Include="external\glm\glm\vec3.hpp" />
     <ClInclude Include="external\glm\glm\vec4.hpp" />
     <ClInclude Include="external\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="include\FileReader.h" />
+    <ClInclude Include="include\InlineHelpers.h" />
     <ClInclude Include="include\rng.h" />
     <ClInclude Include="include\shared_lib.hpp">
       <SubType>
