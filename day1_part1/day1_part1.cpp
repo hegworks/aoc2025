@@ -1,11 +1,11 @@
-#include "../shared_lib/include/FileReader.h"
-#include "../shared_lib/include/FileWriter.hpp"
+#include "../shared_lib/include/file_reader.hpp"
+#include "../shared_lib/include/file_writer.hpp"
 #include "../shared_lib/include/shared_lib.hpp"
 #include "../shared_lib/external/fmt/include/fmt/core.h"
 
 int main()
 {
-    fmt::println("Day1");
+    fmt::println("day1_part1");
     fmt::println("------------");
 
     SharedLib sl{};
@@ -13,8 +13,8 @@ int main()
     FileReader fr{};
     fr.LoadFile("input.txt");
 
-    FileWriter writer("../day1/output.txt");
-    writer.WriteLine("Day1");
+    FileWriter writer("../day1_part1/output.txt");
+    writer.WriteLine("day1_part1");
 
     int dial{50};
     int zero_counter{0};
@@ -56,8 +56,8 @@ int main()
     }
 
     writer.WriteLine(fmt::format("----------"));
-    writer.WriteLine(fmt::format("zeroes: {}", zero_counter));
     writer.WriteLine(fmt::format("dial: {}", dial));
+    writer.WriteLine(fmt::format("zeroes: {}", zero_counter));
     writer.Close();
 
     fmt::println("------------");

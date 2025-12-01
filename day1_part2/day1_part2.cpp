@@ -1,11 +1,11 @@
-#include "../shared_lib/include/FileReader.h"
-#include "../shared_lib/include/FileWriter.hpp"
+#include "../shared_lib/include/file_reader.hpp"
+#include "../shared_lib/include/file_writer.hpp"
 #include "../shared_lib/include/shared_lib.hpp"
 #include "../shared_lib/external/fmt/include/fmt/core.h"
 
 int main()
 {
-    fmt::println("Day2");
+    fmt::println("day1_part2");
     fmt::println("------------");
 
     SharedLib sl{};
@@ -13,11 +13,10 @@ int main()
     FileReader fr{};
     fr.LoadFile("input.txt");
 
-    FileWriter writer("../day2/output.txt");
-    writer.WriteLine("Day2");
+    FileWriter writer("../day1_part2/output.txt");
+    writer.WriteLine("day1_part2");
 
     int dial{50};
-    int zero_at_end_counter{0};
     int zero_during_counter{0};
 
     const int total_line_count = fr.LineCount();
@@ -58,14 +57,10 @@ int main()
 
     writer.WriteLine(fmt::format("----------"));
     writer.WriteLine(fmt::format("dial: {}", dial));
-    writer.WriteLine(fmt::format("zero_during_counter: {}", zero_during_counter));
-    writer.WriteLine(fmt::format("zero_at_end_counter: {}", zero_at_end_counter));
-    writer.WriteLine(fmt::format("zeroes_total: {}", zero_at_end_counter + zero_during_counter));
+    writer.WriteLine(fmt::format("zeroes: {}", zero_during_counter));
     writer.Close();
 
     fmt::println("------------");
     fmt::println("dial: {}", dial);
-    fmt::println("zero_during_counter: {}", zero_during_counter);
-    fmt::println("zero_at_end_counter: {}", zero_at_end_counter);
-    fmt::println("zeroes_total: {}", zero_at_end_counter + zero_during_counter);
+    fmt::println("zeroes: {}", zero_during_counter);
 }
