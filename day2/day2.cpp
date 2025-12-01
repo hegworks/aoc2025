@@ -5,7 +5,7 @@
 
 int main()
 {
-    printf("Day 1");
+    printf("Day 2");
     printf("\n");
     printf("------------");
     printf("\n");
