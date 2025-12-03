@@ -1,18 +1,10 @@
 #include "../shared_lib/include/file_reader.hpp"
 #include "../shared_lib/include/file_writer.hpp"
+#include "../shared_lib/include/helpers.hpp"
 #include "../shared_lib/external/fmt/include/fmt/core.h"
 
 #include <assert.h>
 #include <algorithm>
-
-bool ExistsInIntVec(const std::vector<int>& vec, int to_find)
-{
-    return std::find(vec.begin(), vec.end(), to_find) != vec.end();
-}
-
-int CharToInt(char c) { return c - '0'; }
-
-int DigitFromIntStr(int idx, const std::string& s) { return CharToInt(s.at(idx)); }
 
 int GetBiggestNumIdx(const std::string& input_str, int start_idx, std::vector<int> ignore_idxs)
 {
@@ -21,7 +13,7 @@ int GetBiggestNumIdx(const std::string& input_str, int start_idx, std::vector<in
     int digit_count = (int)input_str.size();
     for (int digit_idx = start_idx; digit_idx < digit_count; ++digit_idx)
     {
-        if (ExistsInIntVec(ignore_idxs, digit_idx))
+        if (ExistsInVec(ignore_idxs, digit_idx))
         {
             continue;
         }
@@ -86,7 +78,7 @@ int main()
         std::string indicators = "";
         for (int i = 0; i < num_length; ++i)
         {
-            indicators += ExistsInIntVec(found_idxs, i) ? "^" : " ";
+            indicators += ExistsInVec(found_idxs, i) ? "^" : " ";
         }
         writer.WriteLine(indicators);
 
