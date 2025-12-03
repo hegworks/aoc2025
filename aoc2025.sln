@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36511.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "day1_part1", "day1_part1\day1_part1.vcxproj", "{9C826B92-97E7-48E7-B69A-77AEA11EE117}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "shared_lib", "shared_lib\shared_lib.vcxproj", "{D354D3EC-E0C7-4B1C-B952-E14EF702C8E7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "day1_part1", "day1_part1\day1_part1.vcxproj", "{9C826B92-97E7-48E7-B69A-77AEA11EE117}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "day1_part2", "day1_part2\day1_part2.vcxproj", "{5D7940F2-E614-4561-9E18-790EDBBC9F8A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "day2", "day2\day2.vcxproj", "{A649A916-8B4F-4F1E-A72E-3B23279EF912}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{5D7940F2-E614-4561-9E18-790EDBBC9F8A}.Debug|x64.Build.0 = Debug|x64
 		{5D7940F2-E614-4561-9E18-790EDBBC9F8A}.Release|x64.ActiveCfg = Release|x64
 		{5D7940F2-E614-4561-9E18-790EDBBC9F8A}.Release|x64.Build.0 = Release|x64
+		{A649A916-8B4F-4F1E-A72E-3B23279EF912}.Debug|x64.ActiveCfg = Debug|x64
+		{A649A916-8B4F-4F1E-A72E-3B23279EF912}.Debug|x64.Build.0 = Debug|x64
+		{A649A916-8B4F-4F1E-A72E-3B23279EF912}.Release|x64.ActiveCfg = Release|x64
+		{A649A916-8B4F-4F1E-A72E-3B23279EF912}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
