@@ -59,10 +59,17 @@ int main()
         const int num_length = (int)input_str.size();
 
         constexpr int digits_to_find_count = 12;
+        int start_idx = 0;
         for (int i = 0; i < digits_to_find_count; ++i)
         {
-            int biggest_digit_idx = GetBiggestNumIdx(input_str, 0, found_idxs);
+            int biggest_digit_idx = GetBiggestNumIdx(input_str, start_idx, found_idxs);
             found_idxs.emplace_back(biggest_digit_idx);
+            int remaining_digits_to_find_count = digits_to_find_count - (int)found_idxs.size();
+            bool can_fit_the_rest = biggest_digit_idx + remaining_digits_to_find_count < num_length;
+            if (can_fit_the_rest)
+            {
+                start_idx = biggest_digit_idx + 1;
+            }
         }
 
         std::string indicators = "";
