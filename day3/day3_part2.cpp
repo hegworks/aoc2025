@@ -3,17 +3,29 @@
 #include "../shared_lib/external/fmt/include/fmt/core.h"
 
 #include <assert.h>
+#include <algorithm>
+
+bool ExistsInIntVec(const std::vector<int>& vec, int to_find)
+{
+    return std::find(vec.begin(), vec.end(), to_find) != vec.end();
+}
 
 int CharToInt(char c) { return c - '0'; }
 
 int DigitFromIntStr(int idx, const std::string& s) { return CharToInt(s.at(idx)); }
 
-int GetBiggestNumIdx(const std::string& input_str, int start_idx, int end_idx)
+int GetBiggestNumIdx(const std::string& input_str, int start_idx, std::vector<int> ignore_idxs)
 {
     int biggest_digit = 0;
     int biggest_digit_idx = -1;
-    for (int digit_idx = start_idx; digit_idx <= end_idx; ++digit_idx)
+    int digit_count = (int)input_str.size();
+    for (int digit_idx = start_idx; digit_idx < digit_count; ++digit_idx)
     {
+        if (ExistsInIntVec(ignore_idxs, digit_idx))
+        {
+            continue;
+        }
+
         int digit_int = DigitFromIntStr(digit_idx, input_str);
         if (digit_int > biggest_digit)
         {
@@ -35,55 +47,46 @@ int main()
     FileWriter writer("../day3/part2/output.txt");
     writer.WriteLine("day3_part2");
 
-    int sum{0};
+    uint64_t sum{0};
 
     const int total_line_count = fr.LineCount();
     for (int line_idx = 0; line_idx < total_line_count; ++line_idx)
     {
+        std::vector<int> found_idxs{};
         std::string input_str = fr.Cin();
+        writer.WriteLine(fmt::format("line: {}", line_idx));
         writer.WriteLine(input_str);
         const int num_length = (int)input_str.size();
-        int first_biggest_num_idx = GetBiggestNumIdx(input_str, 0, num_length - 1);
-        const bool is_last_digit = first_biggest_num_idx == num_length - 1;
-        int second_biggest_num_idx = is_last_digit ? GetBiggestNumIdx(input_str, 0, num_length - 2)
-                                                   : GetBiggestNumIdx(input_str, first_biggest_num_idx + 1, num_length - 1);
-        assert(first_biggest_num_idx != second_biggest_num_idx);
 
-        std::string spaces_0 = "";
-        for (int i = 0; i < first_biggest_num_idx; ++i)
+        constexpr int digits_to_find_count = 12;
+        for (int i = 0; i < digits_to_find_count; ++i)
         {
-            spaces_0 += " ";
-        }
-        spaces_0 += "-";
-
-        std::string spaces_1 = "";
-        for (int i = 0; i < second_biggest_num_idx; ++i)
-        {
-            spaces_1 += " ";
-        }
-        spaces_1 += "-";
-        writer.WriteLine(spaces_0);
-        writer.WriteLine(spaces_1);
-
-        if (is_last_digit)
-        {
-            int temp = first_biggest_num_idx;
-            first_biggest_num_idx = second_biggest_num_idx;
-            second_biggest_num_idx = temp;
+            int biggest_digit_idx = GetBiggestNumIdx(input_str, 0, found_idxs);
+            found_idxs.emplace_back(biggest_digit_idx);
         }
 
-        writer.WriteLine(fmt::format("idx_0: {}", first_biggest_num_idx));
-        writer.WriteLine(fmt::format("idx_1: {}", second_biggest_num_idx));
-        const int int_1 = DigitFromIntStr(first_biggest_num_idx, input_str);
-        const int int_2 = DigitFromIntStr(second_biggest_num_idx, input_str);
-        std::string str_1 = std::to_string(int_1);
-        std::string str_2 = std::to_string(int_2);
-        std::string str_combined = str_1 + str_2;
+        std::string indicators = "";
+        for (int i = 0; i < num_length; ++i)
+        {
+            indicators += ExistsInIntVec(found_idxs, i) ? "^" : " ";
+        }
+        writer.WriteLine(indicators);
+
+        std::sort(found_idxs.begin(), found_idxs.end());
+
+        std::string str_combined{};
+        for (int i = 0; i < digits_to_find_count; ++i)
+        {
+            const int digit_int = DigitFromIntStr(found_idxs.at(i), input_str);
+            std::string digit_str = std::to_string(digit_int);
+            str_combined += digit_str;
+        }
         writer.WriteLine(fmt::format("result: {}", str_combined));
-        int int_combined = std::stoi(str_combined);
+
+        uint64_t int_combined = std::stoull(str_combined);
         sum += int_combined;
 
-        writer.WriteLine(" ");
+        writer.WriteLine("");
     }
     writer.WriteLine("------------");
     writer.WriteLine(fmt::format("{}", sum));
