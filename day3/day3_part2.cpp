@@ -65,14 +65,12 @@ int main()
             int biggest_digit_idx = GetBiggestNumIdx(input_str, start_idx, found_idxs);
             assert(biggest_digit_idx != -1);
             found_idxs.emplace_back(biggest_digit_idx);
-            int remaining_digits_to_find_count = digits_to_find_count - (int)found_idxs.size();
 
             bool found_starting_idx{false};
-            for (int j = 0; j < (int)found_idxs.size(); ++j)
+            for (int j = (int)found_idxs.size() - 1; j >= 0; j--)
             {
-                bool can_fit_the_rest =
-                    found_idxs.at(j) + remaining_digits_to_find_count + ((int)found_idxs.size() - j) < num_length;
-                if (can_fit_the_rest)
+                bool can_find_biggest = GetBiggestNumIdx(input_str, found_idxs.at(j), found_idxs) != -1;
+                if (can_find_biggest)
                 {
                     start_idx = found_idxs.at(j);
                     found_starting_idx = true;
