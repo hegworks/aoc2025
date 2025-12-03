@@ -63,12 +63,25 @@ int main()
         for (int i = 0; i < digits_to_find_count; ++i)
         {
             int biggest_digit_idx = GetBiggestNumIdx(input_str, start_idx, found_idxs);
+            assert(biggest_digit_idx != -1);
             found_idxs.emplace_back(biggest_digit_idx);
             int remaining_digits_to_find_count = digits_to_find_count - (int)found_idxs.size();
-            bool can_fit_the_rest = biggest_digit_idx + remaining_digits_to_find_count < num_length;
-            if (can_fit_the_rest)
+
+            bool found_starting_idx{false};
+            for (int j = 0; j < (int)found_idxs.size(); ++j)
             {
-                start_idx = biggest_digit_idx + 1;
+                bool can_fit_the_rest =
+                    found_idxs.at(j) + remaining_digits_to_find_count + ((int)found_idxs.size() - j) < num_length;
+                if (can_fit_the_rest)
+                {
+                    start_idx = found_idxs.at(j);
+                    found_starting_idx = true;
+                    break;
+                }
+            }
+            if (!found_starting_idx)
+            {
+                start_idx = 0;
             }
         }
 
