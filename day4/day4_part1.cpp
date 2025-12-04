@@ -3,6 +3,8 @@
 #include "../shared_lib/include/helpers.hpp"
 #include "../shared_lib/external/fmt/include/fmt/core.h"
 
+#define PART_2
+
 int GetExistingNeighbourCount(int row_idx, int column_idx, int deepness, const std::vector<std::vector<int>>& map_2d)
 {
     const int column_size = (int)map_2d.size();
@@ -69,6 +71,11 @@ int main()
                 const int found_neighbors_count = GetExistingNeighbourCount(row_idx, column_idx, 1, map_2d);
                 if (found_neighbors_count < 4)
                 {
+#if defined(PART_2)
+                    map_2d[row_idx][column_idx] = 0;
+                    row_idx = 0;
+                    column_idx = 0;
+#endif
                     found_count++;
                 }
             }
