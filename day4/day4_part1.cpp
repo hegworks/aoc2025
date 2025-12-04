@@ -37,6 +37,8 @@ int GetExistingNeighbourCount(int row_idx, int column_idx, int deepness, const s
 
 int main()
 {
+    auto chrono_start = std::chrono::high_resolution_clock::now();
+
     fmt::println("day4_part1");
     fmt::println("------------");
 
@@ -85,4 +87,8 @@ int main()
     writer.Close();
 
     fmt::println(fmt::format("{}", found_count));
+
+    auto chrono_end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration<double, std::milli>(chrono_end - chrono_start);
+    fmt::println(fmt::format("{} ms", duration.count()));
 }
