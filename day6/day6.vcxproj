@@ -75,7 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="day6_part1.cpp" />
+    <ClCompile Include="day6_part2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\shared_lib\shared_lib.vcxproj">
