@@ -30,6 +30,7 @@ public:
     std::string Cin() { return m_loaded_file_lines[line_num++]; }
 
     std::string GetLine(int line_idx) { return m_loaded_file_lines[line_idx]; }
+    std::string GetLine(uint64_t line_idx) { return m_loaded_file_lines[line_idx]; }
 
     int LineCount() const { return static_cast<int>(m_loaded_file_lines.size()); }
 
