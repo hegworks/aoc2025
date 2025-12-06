@@ -304,6 +304,10 @@
     <ClInclude Include="external\glm\glm\vec3.hpp" />
     <ClInclude Include="external\glm\glm\vec4.hpp" />
     <ClInclude Include="external\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="include\chronometer.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="include\file_reader.hpp" />
     <ClInclude Include="include\file_writer.hpp">
       <SubType>
