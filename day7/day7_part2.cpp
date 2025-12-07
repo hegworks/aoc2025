@@ -28,25 +28,19 @@ public:
 
     void PrintFmt() const { fmt::println(GetPrintStr()); }
 
-    std::string GetPrintStr() const
+    std::string GetPrintStr(const std::string& spacer = "") const
     {
         std::string ret{};
         for (uint64_t row = 0; row < m_row_count; ++row)
         {
             for (uint64_t col = 0; col < m_column_count; ++col)
             {
-                ret += fmt::format("{}", Get(row, col));
+                ret += fmt::format("{}{}", Get(row, col), spacer);
             }
             ret += "\n";
         }
         return ret;
     }
-};
-
-struct Cell
-{
-    uint64_t m_row{0};
-    uint64_t m_col{0};
 };
 
 int main()
@@ -62,29 +56,30 @@ int main()
 
     Chronometer chronometer{"day7_part2"};
 
-    // const int line_count = reader.LineCount();
-    const int row_count = reader.LineCount();
-    const int column_count = (int)reader.GetLine(0).size();
+    // const uint64_t line_count = reader.LineCount();
+    const uint64_t row_count = reader.LineCount();
+    const uint64_t column_count = (uint64_t)reader.GetLine(0).size();
 
     Grid<char> grid(row_count, column_count);
+    Grid<uint64_t> int_grid(row_count, column_count);
 
-    for (int row_idx = 0; row_idx < row_count; ++row_idx)
+    for (uint64_t row_idx = 0; row_idx < row_count; ++row_idx)
     {
         std::string input_str = reader.Cin();
-        for (int column_idx = 0; column_idx < column_count; ++column_idx)
+        for (uint64_t column_idx = 0; column_idx < column_count; ++column_idx)
         {
             grid.At(row_idx, column_idx) = input_str.at(column_idx);
         }
     }
 
-    int unique_beam_count{0};
-    int split_count{0};
+    uint64_t unique_beam_count{0};
+    uint64_t split_count{0};
 
-    for (int row_idx = 0; row_idx < row_count; ++row_idx)
+    for (uint64_t row_idx = 0; row_idx < row_count; ++row_idx)
     {
         std::vector<uint64_t> row_beams_col_idx{};
         std::unordered_set<uint64_t> next_row_split_result_col_idx{};
-        for (int col_idx = 0; col_idx < column_count; ++col_idx)
+        for (uint64_t col_idx = 0; col_idx < column_count; ++col_idx)
         {
             const char c = grid.Get(row_idx, col_idx);
             if (c == '.')
@@ -94,6 +89,8 @@ int main()
             else if (c == 'S')
             {
                 grid.Set(row_idx + 1, col_idx, '|');
+                int_grid.Set(row_idx, col_idx, 1);
+                int_grid.Set(row_idx + 1, col_idx, 1);
                 break;
             }
             else if (c == '|')
@@ -102,15 +99,16 @@ int main()
                 continue;
             }
         }
-        for (int beam_idx = 0; beam_idx < (int)row_beams_col_idx.size(); ++beam_idx)
+        for (uint64_t beam_idx = 0; beam_idx < (uint64_t)row_beams_col_idx.size(); ++beam_idx)
         {
             uint64_t beam_col_idx = row_beams_col_idx.at(beam_idx);
             if (grid.IsValid(row_idx + 1, beam_col_idx))
             {
                 char below_beam_char = grid.Get(row_idx + 1, beam_col_idx);
-                if (below_beam_char == '.')
+                if (below_beam_char == '.' || below_beam_char == '|')
                 {
                     grid.Set(row_idx + 1, beam_col_idx, '|');
+                    int_grid.At(row_idx + 1, beam_col_idx) += int_grid.Get(row_idx, beam_col_idx);
                 }
                 else if (below_beam_char == '^')
                 {
@@ -118,30 +116,36 @@ int main()
                     if (grid.IsValid(row_idx + 1, beam_col_idx - 1))
                     {
                         grid.Set(row_idx + 1, beam_col_idx - 1, '|');
+                        int_grid.At(row_idx + 1, beam_col_idx - 1) += int_grid.Get(row_idx, beam_col_idx);
                         next_row_split_result_col_idx.insert(beam_col_idx - 1);
                     }
                     if (grid.IsValid(row_idx + 1, beam_col_idx + 1))
                     {
                         grid.Set(row_idx + 1, beam_col_idx + 1, '|');
+                        int_grid.At(row_idx + 1, beam_col_idx + 1) += int_grid.Get(row_idx, beam_col_idx);
                         next_row_split_result_col_idx.insert(beam_col_idx + 1);
                     }
                 }
+                // else if (below_beam_char == '|')
+                //{
+                // int_grid.At(row_idx + 1, beam_col_idx) += int_grid.Get(row_idx, beam_col_idx);
+                //}
             }
             else
             {
                 break;
             }
         }
-        unique_beam_count += (int)next_row_split_result_col_idx.size();
+        unique_beam_count += (uint64_t)next_row_split_result_col_idx.size();
 
         writer.WriteLine(fmt::format("unique_beam_count: {}", unique_beam_count));
         writer.WriteLine(fmt::format("split_count: {}", split_count));
         writer.Write(grid.GetPrintStr());
         writer.WriteLine("");
 
-        fmt::println("unique_beam_count:{}", unique_beam_count);
-        grid.PrintFmt();
-        fmt::println("");
+        // fmt::println("unique_beam_count:{}", unique_beam_count);
+        // grid.PrintFmt();
+        // fmt::println("");
     }
 
     writer.WriteLine(fmt::format("unique_beam_count: {}", unique_beam_count));
@@ -149,26 +153,18 @@ int main()
     fmt::println("unique_beam_count: {}", unique_beam_count);
     fmt::println("split_count: {}", split_count);
 
-    int timelines{-1};
-    for (int row_idx = 1; row_idx < row_count; row_idx += 2)
+    uint64_t timelines{0};
+    uint64_t last_row_idx = row_count - 1;
+    for (uint64_t col_idx = 0; col_idx < column_count; ++col_idx)
     {
-        for (int col_idx = 0; col_idx < column_count; ++col_idx)
-        {
-            const char c = grid.Get(row_idx, col_idx);
-            if (c == '.')
-            {
-                continue;
-            }
-            else if (c == '|')
-            {
-                timelines++;
-                continue;
-            }
-        }
-
-        writer.WriteLine(fmt::format("timelines: {}", timelines));
-        fmt::println("timelines:{}", timelines);
+        const uint64_t i = int_grid.Get(last_row_idx, col_idx);
+        timelines += i;
     }
+
+    writer.Write(int_grid.GetPrintStr(" "));
+
+    writer.WriteLine(fmt::format("timelines: {}", timelines));
+    fmt::println("timelines:{}", timelines);
 
     writer.Close();
 }
