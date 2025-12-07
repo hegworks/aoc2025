@@ -14,7 +14,7 @@ Written in C++ 17.
 |  4  |   ✅   |   ✅   |
 |  5  |   ✅   |   ❌   |
 |  6  |   ✅   |   ✅   |
-|  7  |  TBD   |  TBD   |
+|  7  |   ✅   |   ✅   |
 |  8  |  TBD   |  TBD   |
 |  9  |  TBD   |  TBD   |
 | 10  |  TBD   |  TBD   |
